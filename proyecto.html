@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Facial Personalizado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .custom-radio:checked {
+            background-color: #7C3AED;
+            border-color: #7C3AED;
+        }
+        .custom-checkbox:checked {
+            background-color: #7C3AED;
+            border-color: #7C3AED;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen flex flex-col lg:flex-row">
+        <!-- Left Side - Image Section -->
+        <div class="lg:w-1/2 bg-purple-100 flex items-center justify-center p-8 lg:p-12" data-aos="fade-right">
+            <div class="max-w-md w-full text-center">
+                <div class="relative rounded-xl overflow-hidden shadow-lg mb-8">
+                    <img id="dynamic-image" src="http://static.photos/wellness/640x360/1" alt="Cuidado Facial" class="w-full h-auto rounded-xl">
+                    <div class="absolute inset-0 bg-gradient-to-t from-purple-900/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h2 class="text-2xl font-bold mb-2">Diagnóstico Facial</h2>
+                        <p class="text-purple-100">Responde las preguntas para obtener recomendaciones personalizadas</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-md">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-semibold text-purple-800 mb-1">Progreso</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div id="progress-bar" class="progress-bar bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <p id="progress-text" class="text-xs text-gray-500 mt-1">0% completado</p>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span><i data-feather="help-circle" class="w-4 h-4 inline mr-1"></i> Diagnóstico</span>
+                        <span id="current-section">Piel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Form Section -->
+        <div class="lg:w-1/2 p-8 lg:p-12 flex items-center" data-aos="fade-left">
+            <div class="max-w-md w-full mx-auto">
+                <form id="facial-form" class="space-y-6">
+                    <!-- Skin Type Section -->
+                    <div id="skin-section" class="form-section">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Tipo de Piel</h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-gray-700 mb-3">¿Cómo describirías tu tipo de piel?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="skin_type" value="dry" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Seco - Sensación de tirantez, a veces descamación</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="skin_type" value="oily" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Graso - Brillo excesivo, poros dilatados</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="skin_type" value="combination" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Mixto - Zona T grasa, mejillas secas</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="skin_type" value="normal" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Normal - Equilibrado, sin problemas evidentes</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="skin_type" value="sensitive" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Sensible - Enrojecimiento, irritación fácil</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concerns Section -->
+                    <div id="concerns-section" class="form-section hidden">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Problemas Principales</h2>
+                        
+                        <div class="space-y-4">
+                            <p class="text-gray-700 mb-3">¿Qué problemas faciales te preocupan más? (Puedes seleccionar varios)</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="acne" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Acné</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="wrinkles" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Arrugas</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="dark_spots" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Manchas oscuras</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="redness" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Enrojecimiento</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="pores" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Poros dilatados</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="dryness" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Sequedad</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="oiliness" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Exceso de grasa</span>
+                                </label>
+                                <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                    <input type="checkbox" name="concerns" value="dark_circles" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <span class="text-gray-700">Ojeras</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Routine Section -->
+                    <div id="routine-section" class="form-section hidden">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Rutina Actual</h2>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <p class="text-gray-700 mb-3">¿Con qué frecuencia limpias tu rostro?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="cleansing" value="once" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">1 vez al día</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="cleansing" value="twice" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">2 veces al día (mañana y noche)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="cleansing" value="more" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Más de 2 veces al día</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="cleansing" value="sometimes" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Ocasionalmente</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-700 mb-3">¿Qué productos usas actualmente en tu rutina facial?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="checkbox" name="products" value="cleanser" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                        <span class="text-gray-700">Limpiador facial</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="checkbox" name="products" value="moisturizer" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                        <span class="text-gray-700">Hidratante</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="checkbox" name="products" value="sunscreen" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                        <span class="text-gray-700">Protector solar</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="checkbox" name="products" value="serum" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                        <span class="text-gray-700">Serum</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="checkbox" name="products" value="exfoliant" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                        <span class="text-gray-700">Exfoliante</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="checkbox" name="products" value="none" class="custom-checkbox h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                        <span class="text-gray-700">No uso productos</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lifestyle Section -->
+                    <div id="lifestyle-section" class="form-section hidden">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Estilo de Vida</h2>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <p class="text-gray-700 mb-3">¿Cómo es tu exposición al sol?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sun_exposure" value="high" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Alta - Mucho tiempo al aire libre</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sun_exposure" value="moderate" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Moderada - Algunas horas al día</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sun_exposure" value="low" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Baja - Principalmente en interiores</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-700 mb-3">¿Cómo describirías tu nivel de estrés?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="stress" value="high" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Alto - Constantemente estresado/a</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="stress" value="moderate" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Moderado - Algún estrés ocasional</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="stress" value="low" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Bajo - Rara vez me siento estresado/a</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-700 mb-3">¿Cuántas horas duermes normalmente?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sleep" value="less_6" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Menos de 6 horas</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sleep" value="6_7" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">6-7 horas</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sleep" value="7_8" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">7-8 horas</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-purple-300 cursor-pointer">
+                                        <input type="radio" name="sleep" value="more_8" class="custom-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                        <span class="text-gray-700">Más de 8 horas</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between pt-6">
+                        <button type="button" id="prev-btn" class="hidden px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            <i data-feather="arrow-left" class="w-4 h-4 inline mr-1"></i> Anterior
+                        </button>
+                        <button type="button" id="next-btn" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            Siguiente <i data-feather="arrow-right" class="w-4 h-4 inline ml-1"></i>
+                        </button>
+                        <button type="submit" id="submit-btn" class="hidden px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            Enviar <i data-feather="send" class="w-4 h-4 inline ml-1"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-xl max-w-md w-full p-8 max-h-[90vh] overflow-y-auto" data-aos="zoom-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-purple-800">Tu Diagnóstico Facial</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                    <i data-feather="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div id="results-content" class="space-y-4">
+                <!-- Results will be inserted here -->
+            </div>
+            
+            <div class="mt-8">
+                <button id="restart-btn" class="w-full px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                    <i data-feather="refresh-cw" class="w-4 h-4 inline mr-1"></i> Comenzar de nuevo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            AOS.init();
+            
+            const formSections = document.querySelectorAll('.form-section');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const currentSectionText = document.getElementById('current-section');
+            const dynamicImage = document.getElementById('dynamic-image');
+            const resultsModal = document.getElementById('results-modal');
+            const closeModal = document.getElementById('close-modal');
+            const restartBtn = document.getElementById('restart-btn');
+            const resultsContent = document.getElementById('results-content');
+            
+            let currentSection = 0;
+            const totalSections = formSections.length;
+            
+            // Update progress
+            function updateProgress() {
+                const progress = ((currentSection + 1) / totalSections) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}% completado`;
+                
+                // Update current section text
+                const sections = ['Piel', 'Problemas', 'Rutina', 'Estilo de Vida'];
+                currentSectionText.textContent = sections[currentSection];
+                
+                // Update image based on section
+                const images = [
+                    'http://static.photos/wellness/640x360/1',
+                    'http://static.photos/wellness/640x360/2',
+                    'http://static.photos/wellness/640x360/3',
+                    'http://static.photos/wellness/640x360/4'
+                ];
+                dynamicImage.src = images[currentSection];
+            }
+            
+            // Show current section
+            function showSection(index) {
+                formSections.forEach((section, i) => {
+                    section.classList.toggle('hidden', i !== index);
+                });
+                
+                // Update button visibility
+                prevBtn.classList.toggle('hidden', index === 0);
+                nextBtn.classList.toggle('hidden', index === totalSections - 1);
+                submitBtn.classList.toggle('hidden', index !== totalSections - 1);
+                
+                updateProgress();
+            }
+            
+            // Next button click
+            nextBtn.addEventListener('click', function() {
+                if (validateCurrentSection()) {
+                    currentSection++;
+                    showSection(currentSection);
+                }
+            });
+            
+            // Previous button click
+            prevBtn.addEventListener('click', function() {
+                currentSection--;
+                showSection(currentSection);
+            });
+            
+            // Validate current section before proceeding
+            function validateCurrentSection() {
+                const currentSectionEl = formSections[currentSection];
+                const requiredInputs = currentSectionEl.querySelectorAll('input[required]');
+                let isValid = true;
+                
+                requiredInputs.forEach(input => {
+                    if (!input.checked && !input.value) {
+                        isValid = false;
+                        input.closest('label').classList.add('border-red-400');
+                    } else {
+                        input.closest('label').classList.remove('border-red-400');
+                    }
+                });
+                
+                if (!isValid) {
+                    alert('Por favor completa todas las preguntas requeridas antes de continuar.');
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission
+            document.getElementById('facial-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Gather all form data
+                const formData = new FormData(this);
+                const data = {};
+                formData.forEach((value, key) => {
+                    if (data[key]) {
+                        if (Array.isArray(data[key])) {
+                            data[key].push(value);
+                        } else {
+                            data[key] = [data[key], value];
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                });
+                
+                // Generate results based on form data
+                generateResults(data);
+                
+                // Show results modal
+                resultsModal.classList.remove('hidden');
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                resultsModal.classList.add('hidden');
+            });
+            
+            // Restart form
+            restartBtn.addEventListener('click', function() {
+                resultsModal.classList.add('hidden');
+                document.getElementById('facial-form').reset();
+                currentSection = 0;
+                showSection(currentSection);
+            });
+            
+            // Generate personalized results
+            function generateResults(data) {
+                let html = '';
+                
+                // Skin type analysis
+                html += `<div class="bg-purple-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-semibold text-purple-800 mb-2">Tipo de Piel</h4>
+                    <p class="text-gray-700">${getSkinTypeAnalysis(data.skin_type)}</p>
+                </div>`;
+                
+                // Concerns analysis
+                if (data.concerns && data.concerns.length > 0) {
+                    html += `<div class="bg-purple-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-semibold text-purple-800 mb-2">Problemas Principales</h4>
+                        <p class="text-gray-700">${getConcernsAnalysis(data.concerns, data.skin_type)}</p>
+                    </div>`;
+                }
+                
+                // Routine analysis
+                html += `<div class="bg-purple-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-semibold text-purple-800 mb-2">Rutina Actual</h4>
+                    <p class="text-gray-700">${getRoutineAnalysis(data.cleansing, data.products)}</p>
+                </div>`;
+                
+                // Lifestyle analysis
+                html += `<div class="bg-purple-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-semibold text-purple-800 mb-2">Estilo de Vida</h4>
+                    <p class="text-gray-700">${getLifestyleAnalysis(data.sun_exposure, data.stress, data.sleep)}</p>
+                </div>`;
+                
+                // Recommendations
+                html += `<div class="bg-purple-100 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-800 mb-2">Recomendaciones Personalizadas</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        ${getRecommendations(data.skin_type, data.concerns, data.cleansing, data.products, data.sun_exposure, data.stress, data.sleep)}
+                    </ul>
+                </div>`;
+                
+                resultsContent.innerHTML = html;
+                feather.replace();
+            }
+            
+            // Helper functions for generating analysis
+            function getSkinTypeAnalysis(skinType) {
+                const analysis = {
+                    'dry': 'Tu piel seca necesita hidratación intensa. Busca productos con ácido hialurónico, ceramidas y manteca de karité para restaurar la barrera cutánea.',
+                    'oily': 'Tu piel grasa produce exceso de sebo. Usa productos oil-free y no comedogénicos que regulen la producción de grasa sin resecar.',
+                    'combination': 'Tu piel mixta necesita equilibrio. Trata las zonas T con productos para piel grasa y las mejillas con hidratantes más ricos.',
+                    'normal': 'Tu piel normal está en buen equilibrio. Mantén tu rutina simple pero efectiva para preservar su salud.',
+                    'sensitive': 'Tu piel sensible necesita cuidado especial. Evita fragancias, alcohol y opta por productos calmantes con ingredientes como avena y aloe vera.'
+                };
+                return analysis[skinType] || 'Es importante identificar correctamente tu tipo de piel para elegir los productos adecuados.';
+            }
+            
+            function getConcernsAnalysis(concerns, skinType) {
+                let analysis = '';
+                
+                if (Array.isArray(concerns)) {
+                    concerns.forEach(concern => {
+                        switch(concern) {
+                            case 'acne':
+                                analysis += `El acné puede ser causado por exceso de grasa, bacterias o inflamación. `;
+                                if (skinType === 'oily') analysis += `Para piel grasa, usa productos con ácido salicílico o peróxido de benzoilo. `;
+                                else if (skinType === 'sensitive') analysis += `Para piel sensible, prueba con niacinamida o azufre que son más suaves. `;
+                                break;
+                            case 'wrinkles':
+                                analysis += `Las arrugas aparecen por pérdida de colágeno. `;
+                                if (skinType === 'dry') analysis += `La piel seca acentúa las líneas, hidrata profundamente. `;
+                                analysis += `Considera retinoides y antioxidantes como vitamina C. `;
+                                break;
+                            case 'dark_spots':
+                                analysis += `Las manchas oscuras requeren ingredientes despigmentantes como ácido kójico, vitamina C o niacinamida. `;
+                                if (skinType === 'sensitive') analysis += `Usa estos activos en concentraciones bajas para evitar irritación. `;
+                                break;
+                            case 'redness':
+                                analysis += `El enrojecimiento indica inflamación o sensibilidad. `;
+                                analysis += `Ingredientes como centella asiática, aloe vera y té verde pueden ayudar a calmarlo. `;
+                                break;
+                            case 'pores':
+                                analysis += `Los poros dilatados pueden minimizarse con exfoliación química (AHA/BHA) y productos matificantes. `;
+                                break;
+                            case 'dryness':
+                                analysis += `La sequedad extrema necesita emolientes ricos como ceramidas, mantecas y aceites no comedogénicos. `;
+                                break;
+                            case 'oiliness':
+                                analysis += `El exceso de grasa se controla con limpieza suave y productos que regulen la producción sebácea sin resecar. `;
+                                break;
+                            case 'dark_circles':
+                                analysis += `Las ojeras pueden mejorar con cafeína, vitamina K y cuidado del sueño. `;
+                                break;
+                        }
+                    });
+                } else if (concerns) {
+                    analysis = getConcernsAnalysis([concerns], skinType);
+                }
+                
+                return analysis || 'Todos los tipos de piel pueden beneficiarse de una rutina básica de limpieza, hidratación y protección solar.';
+            }
+            
+            function getRoutineAnalysis(cleansing, products) {
+                let analysis = '';
+                
+                // Cleansing frequency
+                switch(cleansing) {
+                    case 'once':
+                        analysis += `Limpiar tu rostro solo una vez al día puede no ser suficiente, especialmente si usas maquillaje o protector solar. `;
+                        break;
+                    case 'twice':
+                        analysis += `Limpiar mañana y noche es ideal para mantener la piel equilibrada. `;
+                        break;
+                    case 'more':
+                        analysis += `Limpiar más de dos veces al día puede ser excesivo y alterar el manto hidrolipídico de tu piel. `;
+                        break;
+                    case 'sometimes':
+                        analysis += `La limpieza irregular puede acumular impurezas que obstruyen los poros. `;
+                        break;
+                }
+                
+                // Products used
+                if (products) {
+                    if (Array.isArray(products)) {
+                        if (products.includes('none')) {
+                            analysis += `No usar productos faciales puede dejar tu piel sin la protección y cuidados básicos que necesita. `;
+                        } else {
+                            analysis += `Actualmente usas: ${products.map(p => {
+                                switch(p) {
+                                    case 'cleanser': return 'limpiador';
+                                    case 'moisturizer': return 'hidratante';
+                                    case 'sunscreen': return 'protector solar';
+                                    case 'serum': return 'serum';
+                                    case 'exfoliant': return 'exfoliante';
+                                    default: return p;
+                                }
+                            }).join(', ')}. `;
+                            
+                            if (!products.includes('sunscreen')) {
+                                analysis += `El protector solar es esencial para prevenir daño solar y envejecimiento prematuro. `;
+                            }
+                            if (!products.includes('moisturizer')) {
+                                analysis += `Todos los tipos de piel necesitan hidratación, incluso las grasas. `;
+                            }
+                        }
+                    } else if (products === 'none') {
+                        analysis += `No usar productos faciales puede dejar tu piel sin la protección y cuidados básicos que necesita. `;
+                    }
+                }
+                
+                return analysis || 'Una rutina básica debe incluir limpieza, hidratación y protección solar como mínimo.';
+            }
+            
+            function getLifestyleAnalysis(sunExposure, stress, sleep) {
+                let analysis = '';
+                
+                // Sun exposure
+                switch(sunExposure) {
+                    case 'high':
+                        analysis += `La alta exposición solar sin protección adecuada acelera el envejecimiento y puede causar manchas. `;
+                        break;
+                    case 'moderate':
+                        analysis += `La exposición solar moderada requiere protector solar diario, incluso en días nublados. `;
+                        break;
+                    case 'low':
+                        analysis += `Aunque tu exposición solar sea baja, los rayos UV penetran ventanas y causan daño acumulativo. `;
+                        break;
+                }
+                
+                // Stress levels
+                switch(stress) {
+                    case 'high':
+                        analysis += `El estrés elevado aumenta el cortisol, lo que puede empeorar problemas como acné, rosácea y envejecimiento. `;
+                        break;
+                    case 'moderate':
+                        analysis += `El estrés ocasional puede afectar temporalmente tu piel, causando brotes o sensibilidad. `;
+                        break;
+                    case 'low':
+                        analysis += `Los bajos niveles de estrés benefician la salud general de tu piel. `;
+                        break;
+                }
+                
+                // Sleep habits
+                switch(sleep) {
+                    case 'less_6':
+                        analysis += `Dormir menos de 6 horas no permite la adecuada regeneración celular, lo que se refleja en tu piel. `;
+                        break;
+                    case '6_7':
+                        analysis += `6-7 horas de sueño son aceptables, pero 8 horas serían ideales para la reparación cutánea. `;
+                        break;
+                    case '7_8':
+                        analysis += `Dormir 7-8 horas favorece la renovación celular y la producción de colágeno. `;
+                        break;
+                    case 'more_8':
+                        analysis += `Dormir más de 8 horas puede ser beneficioso para la recuperación de tu piel. `;
+                        break;
+                }
+                
+                return analysis || 'Factores como el sol, estrés y sueño impactan significativamente la salud de tu piel a largo plazo.';
+            }
+            
+            function getRecommendations(skinType, concerns, cleansing, products, sunExposure, stress, sleep) {
+                let recommendations = [];
+                
+                // General recommendations based on skin type
+                switch(skinType) {
+                    case 'dry':
+                        recommendations.push('Limpieza con aceites o cremas limpiadoras sin sulfatos');
+                        recommendations.push('Hidratantes ricos en ceramidas, ácido hialurónico y mantecas');
+                        recommendations.push('Evita agua muy caliente que reseca más la piel');
+                        break;
+                    case 'oily':
+                        recommendations.push('Geles limpiadores con ácido salicílico o tea tree');
+                        recommendations.push('Hidratantes oil-free o en gel para no agregar grasa');
+                        recommendations.push('Exfoliación química 2-3 veces por semana con BHA');
+                        break;
+                    case 'combination':
+                        recommendations.push('Limpieza balanceada que no reseque pero controle la zona T');
+                        recommendations.push('Hidratación diferenciada: más ligera en zona T, más rica en mejillas');
+                        recommendations.push('Mascarillas localizadas según necesidades de cada área');
+                        break;
+                    case 'normal':
+                        recommendations.push('Mantén una rutina simple de limpieza e hidratación');
+                        recommendations.push('Incorpora antioxidantes como vitamina C para prevención');
+                        recommendations.push('No descuides el protector solar aunque tu piel sea resistente');
+                        break;
+                    case 'sensitive':
+                        recommendations.push('Productos sin fragancia, alcohol ni ingredientes irritantes');
+                        recommendations.push('Ingredientes calmantes como avena, aloe vera y pantenol');
+                        recommendations.push('Parchear nuevos productos antes de uso completo');
+                        break;
+                }
+                
+                // Recommendations based on concerns
+                if (concerns) {
+                    if (Array.isArray(concerns)) {
+                        concerns.forEach(concern => {
+                            switch(concern) {
+                                case 'acne':
+                                    recommendations.push(skinType === 'sensitive' ? 
+                                        'Niacinamida al 5% para reducir inflamación sin irritar' : 
+                                        'Tratamientos localizados con peróxido de benzoilo al 2.5-5%');
+                                    recommendations.push('Cambiar fundas de almohada cada 2-3 días');
+                                    break;
+                                case 'wrinkles':
+                                    recommendations.push('Retinoides nocturnos (empezar con concentración baja)');
+                                    recommendations.push('Protector solar con SPF 30+ diario para prevenir más daño');
+                                    break;
+                                case 'dark_spots':
+                                    recommendations.push('Serum con vitamina C por la mañana bajo protector solar');
+                                    recommendations.push('Ingredientes despigmentantes como ácido kójico o arbutina');
+                                    break;
+                                case 'redness':
+                                    recommendations.push('Productos con centella asiática o té verde');
+                                    recommendations.push('Evitar baños muy calientes y cambios bruscos de temperatura');
+                                    break;
+                                case 'pores':
+                                    recommendations.push('Arcillas 1-2 veces por semana para absorber exceso de grasa');
+                                    recommendations.push('Primers no comedogénicos para minimizar apariencia temporalmente');
+                                    break;
+                                case 'dryness':
+                                    recommendations.push('Hidratación en capas: primero suero hialurónico, luego crema');
+                                    recommendations.push('Humidificador en dormitorio si vives en clima seco');
+                                    break;
+                                case 'oiliness':
+                                    recommendations.push('Papel absorbente para retirar exceso de grasa durante el día');
+                                    recommendations.push('No sobre-limpies para evitar efecto rebote de producción sebácea');
+                                    break;
+                                case 'dark_circles':
+                                    recommendations.push('Parches o contornos de ojos con cafeína');
+                                    recommendations.push('Dormir boca arriba para evitar acumulación de fluidos');
+                                    break;
+                            }
+                        });
+                    } else {
+                        recommendations = recommendations.concat(getRecommendations(skinType, [concerns], cleansing, products, sunExposure, stress, sleep));
+                    }
+                }
+                
+                // Routine improvements
+                if (cleansing === 'once' || cleansing === 'sometimes') {
+                    recommendations.push('Establece rutina de limpieza mañana y noche');
+                } else if (cleansing === 'more') {
+                    recommendations.push('Reduce la frecuencia de limpieza a 2 veces diarias para no alterar la barrera cutánea');
+                }
+                
+                if (!products || products === 'none' || (Array.isArray(products) && !products.includes('sunscreen'))) {
+                    recommendations.push('Protector solar SPF 30+ diario es imprescindible, incluso en interiores');
+                }
+                
+                if (!products || products === 'none' || (Array.isArray(products) && !products.includes('moisturizer'))) {
+                    recommendations.push('Incorpora un hidratante adecuado para tu tipo de piel');
+                }
+                
+                // Lifestyle adjustments
+                if (sunExposure === 'high' || sunExposure === 'moderate') {
+                    recommendations.push('Reaplica protector solar cada 2 horas si estás al aire libre');
+                    recommendations.push('Usa sombrero y gafas de sol para protección adicional');
+                }
+                
+                if (stress === 'high') {
+                    recommendations.push('Practica técnicas de manejo de estrés como meditación o yoga');
+                    recommendations.push('Masaje facial puede mejorar circulación y reducir tensión');
+                }
+                
+                if (sleep === 'less_6' || sleep === '6_7') {
+                    recommendations.push('Intenta aumentar tus horas de sueño a 7-8 para permitir reparación celular');
+                    recommendations.push('Almohada de seda puede reducir fricción y marcas de sueño');
+                }
+                
+                // Remove duplicates
+                recommendations = [...new Set(recommendations)];
+                
+                // Convert to HTML list items
+                return recommendations.map(rec => `<li>${rec}</li>`).join('');
+            }
+            
+            // Initialize first section
+            showSection(0);
+        });
+    </script>
+</body>
+</html>
